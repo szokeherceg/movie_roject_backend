@@ -1,0 +1,116 @@
+﻿@page "/booking/{MovieId:int}/{ShowTime}"
+@rendermode InteractiveServer
+
+<PageTitle>Seat Booking</PageTitle>
+
+<h2>Foglalás</h2>
+
+<div class="booking-container">
+    <div class="screen-desc">SCREEN</div>
+
+    <div class="seat-grid">
+        @for (int r = 1; r <= Rows; r++)
+        {
+            <div class="seat-row" style="@GetGridTemplate()">
+                <span class="row-number">@r</span>
+
+                @for (int c = 1; c <= Cols; c++)
+                {
+                    if (c == Stairs && Stairs != 0)
+                    {
+                        <span class="stair"></span>
+                    }
+                    else
+                    {
+                        int seatNum = c;
+                        if (seatNum > Stairs && Stairs != 0)
+                            seatNum -= 1;
+
+                        string seatId = $"{r}-{seatNum}";
+                        bool isSelected = SelectedSeats.Contains(seatId);
+
+                        <button class="seat @(isSelected ? "selected" : "")"
+                                type="button"
+                                @onclick="() => ToggleSeat(seatId)">
+                            @seatNum
+                        </button>
+                    }
+                }
+
+                <span class="row-number">@r</span>
+            </div>
+        }
+    </div>
+</div>
+<div class="button-container">
+    <button class="details-btn" @onclick="GoBack">Vissza</button>
+    <button class="details-btn" @onclick="ShowSelectedSeats">Mutasd a kiválasztott székeket</button>
+</div>
+
+@if (ShowSeats)
+{
+    <div class="selected-seats" style="margin-top:10px; padding:10px; border:1px solid #ccc; border-radius:5px;">
+        <strong>Kiválasztott székek:</strong>
+        @if (SelectedSeats.Count == 0)
+        {
+            <span> Nincs kiválasztva szék.</span>
+        }
+        else
+        {
+            <ul>
+                @foreach (var seat in SelectedSeats)
+                {
+                    <li>@seat</li>
+                }
+            </ul>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public int MovieId { get; set; }
+    [Parameter] public string ShowTime { get; set; } = "";
+
+    private DateTime SelectedShowTime;
+
+    public int Rows = 12;
+    public int Cols = 10;
+    public int Stairs = 0;
+
+    private HashSet<string> SelectedSeats = new();
+    private bool ShowSeats = false;
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(ShowTime))
+        {
+            SelectedShowTime = DateTime.ParseExact(ShowTime, "HH-mm", System.Globalization.CultureInfo.InvariantCulture);
+        }
+    }
+
+    private string GetGridTemplate()
+    {
+        int totalCols = Cols + 2;
+        return $"display: grid; grid-template-columns: repeat({totalCols}, 45px); gap: 5px;";
+    }
+
+    private void ToggleSeat(string seatId)
+    {
+        if (SelectedSeats.Contains(seatId))
+            SelectedSeats.Remove(seatId);
+        else
+            SelectedSeats.Add(seatId);
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void ShowSelectedSeats()
+    {
+        ShowSeats = !ShowSeats;
+    }
+
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
+}

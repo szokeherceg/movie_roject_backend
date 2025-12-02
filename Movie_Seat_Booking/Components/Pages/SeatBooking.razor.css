@@ -1,0 +1,101 @@
+﻿.booking-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.screen-desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+    color: #ff6f61;
+    height: 50px;
+    width: 50%;
+    padding: 0 40px;
+    margin: 30px auto 20px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    box-shadow: 0 6px 14px rgba(255,111,97,0.4);
+    text-align: center;
+}
+
+.seat-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.seat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 10px;
+    align-items: center;
+}
+
+.seat {
+    background-color: #4caf50;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    height: 40px;
+    width: 40px;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    transition: background-color 0.3s, transform 0.15s, box-shadow 0.3s;
+    cursor: pointer;
+    border: none;
+}
+
+    .seat:hover {
+        background-color: #45a049;
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .seat.selected {
+        background-color: #ff6f61;
+        color: white;
+        box-shadow: 0 4px 14px rgba(255,111,97,0.6);
+    }
+
+.stair {
+    background-color: transparent;
+    width: 45px;
+    height: 40px;
+}
+
+.row-number {
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    height: 40px;
+    line-height: 40px;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+}
+
+@media (max-width: 600px) {
+    .screen-desc {
+        width: 80%;
+        font-size: 16px;
+        padding: 0 20px;
+    }
+
+    .seat {
+        height: 36px;
+        width: 36px;
+        font-size: 0.9rem;
+    }
+
+    .row-number {
+        height: 36px;
+        line-height: 36px;
+    }
+}

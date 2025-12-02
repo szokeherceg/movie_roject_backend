@@ -1,0 +1,67 @@
+﻿@page "/"
+
+<h1>Filmek</h1>
+
+@if (movies == null)
+{
+    <p>Betöltés...</p>
+}
+else
+{
+    <div class="film-list">
+        @foreach (var m in movies)
+        {
+            <div class="film-card">
+                <img src="@m.ImageUrl" alt="@m.Title" class="film-image" />
+                <h2>@m.Title</h2>
+                <p>@m.Description</p>
+
+                <NavLink class="details-btn" href="@($"/movie/{m.Id}")">
+                    Részletek →
+                </NavLink>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    List<Movie> movies;
+
+    protected override void OnInitialized()
+    {
+        movies = new List<Movie>
+{
+    new Movie
+    {
+        Id = 1,
+        Title = "Jujutsu Kaisen",
+        Description = "Anime sorozat.",
+        ImageUrl = "https://m.media-amazon.com/images/M/MV5BODMxOWIxYzAtNTNiYi00MTk5LWE2MjUtNjM1MTg3YmQ5NTlhXkEyXkFqcGc@._V1_.jpg"
+    },
+        new Movie
+    {
+        Id = 2,
+        Title = "Zootropolis 2",
+        Description = "Animációs film.",
+        ImageUrl = "https://lumiere-a.akamaihd.net/v1/images/image_a36be42c.jpeg?region=0,0,540,810"
+    },
+    new Movie
+    {
+        Id = 3,
+        Title = "Demon Slayer",
+        Description = "Anime sorozat.",
+        ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Kimetsu_No_Yaiba_Mugen_Jyo-hen_theatrical_poster.jpg/250px-Kimetsu_No_Yaiba_Mugen_Jyo-hen_theatrical_poster.jpg"
+    }
+
+};
+
+    }
+
+    public class Movie
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string ImageUrl { get; set; } = "";
+    }
+}

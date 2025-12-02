@@ -1,0 +1,96 @@
+﻿@page "/movie/{MovieId:int}"
+
+@if (movie == null)
+{
+    <p>Betöltés...</p>
+}
+else
+{
+    <div class="movie-details">
+        <img src="@movie.ImageUrl" alt="@movie.Title" class="movie-image" />
+
+        <div class="details-content">
+            <h2>@movie.Title</h2>
+            <p>@movie.Description</p>
+
+            <div class="showtimes">
+                <h3>Vetítési időpontok</h3>
+                @foreach (var time in movie.ShowTimes)
+                {
+                    <a class="showtime-btn"
+                       href="/booking/@movie.Id/@time.ToString("HH-mm")">
+                        @time.ToString("HH:mm")
+                    </a>
+                }
+            </div>
+
+            <div class="back-button">
+                <a href="/">Vissza a filmekhez</a>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int MovieId { get; set; }
+
+    Movie? movie;
+
+    protected override void OnInitialized()
+    {
+        var movies = new List<Movie>
+        {
+            new Movie
+            {
+                Id = 1,
+                Title = "Jujutsu Kaisen",
+                Description = "Yuji Itadori egy átlagos középiskolás, aki belesodródik a szörnyek és átkok világába. Izgalmas harcok és misztikus kalandok várnak rá a Jujutsu mágia mesterei között.",
+                ImageUrl = "https://m.media-amazon.com/images/M/MV5BODMxOWIxYzAtNTNiYi00MTk5LWE2MjUtNjM1MTg3YmQ5NTlhXkEyXkFqcGc@._V1_.jpg",
+                ShowTimes = new List<DateTime>
+                {
+                    DateTime.Today.AddHours(15),
+                    DateTime.Today.AddHours(18),
+                    DateTime.Today.AddHours(21)
+                }
+            },
+            new Movie
+            {
+                Id = 2,
+                Title = "Zootropolis 2",
+                Description = "A Zootropolis város állatai visszatérnek, hogy új kalandokon vegyenek részt. Judy Hopps és Nick Wilde izgalmas ügyeket oldanak meg, miközben humorral és szívmelengető pillanatokkal szórakoztatják a nézőket.",
+                ImageUrl = "https://lumiere-a.akamaihd.net/v1/images/image_a36be42c.jpeg?region=0,0,540,810",
+                ShowTimes = new List<DateTime>
+                {
+                    DateTime.Today.AddHours(14),
+                    DateTime.Today.AddHours(17),
+                    DateTime.Today.AddHours(20)
+                }
+            },
+            new Movie
+            {
+                Id = 3,
+                Title = "Demon Slayer",
+                Description = "Tanjiro Kamado családját démonok pusztítják el, ezért elhatározza, hogy démonvadásszá válik. Lenyűgöző animáció és szívhez szóló történet kíséri végig kalandjait a bosszú és a család védelme útján.",
+                ImageUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Kimetsu_No_Yaiba_Mugen_Jyo-hen_theatrical_poster.jpg/250px-Kimetsu_No_Yaiba_Mugen_Jyo-hen_theatrical_poster.jpg",
+                ShowTimes = new List<DateTime>
+                {
+                    DateTime.Today.AddHours(16),
+                    DateTime.Today.AddHours(19),
+                    DateTime.Today.AddHours(22)
+                }
+            }
+        };
+
+        movie = movies.FirstOrDefault(m => m.Id == MovieId);
+    }
+
+
+    public class Movie
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string ImageUrl { get; set; } = "";
+        public List<DateTime> ShowTimes { get; set; } = new List<DateTime>();
+    }
+}
